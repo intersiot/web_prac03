@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>메인페이지 | {{ name }}</title>
+    <!--  jQuery import  -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // get_list()
+        })
+
+        function get_list() {
+            $.ajax({
+                type: "GET",
+                url: "http://openapi.seoul.go.kr:8088/6d4d776b466c656533356a4b4b5872/json/RealtimeCityAir/1/99",
+                data: {},
+                success: function (response) {
+                    let rows = response["RealtimeCityAir"]["row"];
+                    // console.log(rows)
+
+                    for (let i = 0; i < rows.length; i++) {
+                        let gu_name = rows[i]['MSRSTE_NM']
+                        let gu_mise = rows[i]['IDEX_MVL']
+                        console.log(gu_name, gu_mise)
+
+                        if (gu_mise >= 50) {
+                            let temp_html = `<li>${gu_name}: ${gu_mise}</li>`
+                            $('#gu-list').append(temp_html)
+                        }
+                    }
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+    <h1>메인페이지 입니다.</h1>
+    <a href="/detail">상세페이지로 가기</a>
+    <h3>나의 이름은 {{ name }}입니다.</h3>
+    <!--  중괄호를 쓰는 게 jinja의 문법이다  -->
+    <ul id="gu-list">
+        {% for row in rows %}
+            {% set gu_name = row.MSRSTE_NM %}
+            {% set gu_mise = row.IDEX_MVL|int %}
+            {% if gu_mise >= 50 %}
+                <li>{{ gu_name }}: {{ gu_mise }}</li>
+            {% endif %}
+        {% endfor %}
+        <!--  정수형으로 나타내고 싶을 때: |int  -->
+    </ul>
+</body>
+</html>
