@@ -1,27 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>Sparta Vocabulary Notebook</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Sparta Vocabulary Notebook</title>
 
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-              crossorigin="anonymous">
+    <!--  og tag & favicon  -->
+    <meta property="og:title" content="Sparta Vocabulary Notebook"/>
+    <meta property="og:description" content="mini project for Web Plus"/>
+    <meta property="og:image" content="{{ url_for('static', filename='logo_red.png') }}"/>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 
-        <!-- Optional JavaScript -->
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-                crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-                crossorigin="anonymous"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <!--  Font Awesome Link  -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!--  CSS Style Link  -->
+    <link rel="stylesheet" href="{{ url_for("static", filename="mystyle.css") }}">
 
-    </head>
-    <body>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
 
-    </body>
+    <style>
+        .search-box {
+            width: 70%;
+            margin: 50px auto;
+            max-width: 700px;
+        }
+
+        .table {
+            width: 80%;
+            max-width: 800px;
+            margin: auto;
+            table-layout: fixed;
+        }
+
+        .table th {
+            border-top-style: none;
+        }
+
+        td {
+            background-color: white;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        td > a, a:visited, a:hover, a:active {
+            color: black;
+        }
+
+        tr.highlight > td {
+            background-color: #e8344e;
+            color: white;
+        }
+
+        tr.highlight a {
+            color: white;
+        }
+
+        thead:first-child tr:first-child th:first-child {
+            border-radius: 10px 0 0 0;
+        }
+
+        thead:first-child tr:first-child th:last-child {
+            border-radius: 0 10px 0 0;
+        }
+
+        tbody:last-child tr:last-child td:first-child {
+            border-radius: 0 0 0 10px;
+        }
+
+        tbody:last-child tr:last-child td:last-child {
+            border-radius: 0 0 10px 0;
+        }
+    </style>
+
+    <script>
+        {% if msg %}
+            alert("{{ msg }}")
+        {% endif %}
+
+        // 내 단어장에 있는 단어 받아오기
+        let words = {{ words|tojson }}
+            console.log(words)
+        let word_list = []
+        for (let i = 0; i < words.length; i++) {
+            word_list.push(words[i]["word"])
+        }
+        console.log(word_list)
+
+        function find_word() {
+            // 대문자로 써도 인식이 되도록 입력받은 값을 소문자로 받는다: toLowerCase()
+            let word = $("#input-word").val().toLowerCase()
+            // console.log(word)
+            if (word_list.includes(word)) {
+                console.log("단어가 존재합니다.")
+                // 단어장에 검색한 단어가 존재하면 하이라이트 해준다.
+                $(`#word-${word}`).addClass("highlight")
+                // 하이라이트가 된 애가 있으면 걔의 하이라이트를 빼라
+                $(`#word-${word}`).siblings().removeClass("highlight")
+                // 단어장에 검색한 단어가 존재하는 곳에 스크롤이 찾아감
+                $(`#word-${word}`).get(0).scrollIntoView()
+            } else {
+                // 단어가 존재하지 않는 경우 디테일 페이지로 넘어가도록 함.
+                window.location.href = `/detail/${word}?status_give=new`
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="wrap">
+    <div class="banner" onclick="window.location.href = '/'"></div>
+    <div class="search-box d-flex justify-content-center">
+        <input id="input-word" class="form-control" style="margin-right: 0.5rem">
+        <button class="btn btn-light" onclick="find_word()"><i class="fa fa-search"></i></button>
+    </div>
+
+    <!--  단어장  -->
+    <table class="table">
+        <thead class="thead-light">
+        <tr>
+            <th scope="col" style="width:30%">WORD</th>
+            <th scope="col">MEANING</th>
+        </tr>
+        </thead>
+        <tbody id="tbody-box">
+        {% for word in words %}
+            <tr id="word-{{ word.word }}">
+                <td><a href="/detail/{{ word.word }}?status_give=old">{{ word.word }}</a></td>
+                <td>{{ word.definition|safe }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>
 </html>
