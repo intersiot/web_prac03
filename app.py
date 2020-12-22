@@ -4,7 +4,7 @@ import requests
 
 app = Flask(__name__)
 
-client = MongoClient('3.35.47.80', 27017, username="test", password="test")
+client = MongoClient('내AWS아이피주소', 27017, username="아이디", password="비밀번호")
 db = client.dbsparta_plus_week2
 
 
@@ -23,7 +23,7 @@ def detail(keyword):
     status_receive = request.args.get("status_give")
     # API에서 단어 뜻 찾아서 결과 보내기
     r = requests.get(f"https://owlbot.info/api/v4/dictionary/{keyword}",
-                     headers={"Authorization": "Token fa3c379031c3271687cd6e80de4c80852789c7f8"})
+                     headers={"Authorization": "Token 메일로온토큰"})
     # 없는 단어일 때 처리하기
     if r.status_code != 200:
         return redirect(url_for("main", msg="단어가 존재하지 않습니다."))
