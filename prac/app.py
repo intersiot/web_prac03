@@ -22,7 +22,7 @@ def detail(keyword):
     # word_recive = request.args.get("word_give")
 
     # Owlbot API 요청 코드
-    r = requests.get(f"https://owlbot.info/api/v4/dictionary/{keyword}", headers={"Authorization": "Token fa3c379031c3271687cd6e80de4c80852789c7f8"})
+    r = requests.get(f"https://owlbot.info/api/v4/dictionary/{keyword}", headers={"Authorization": "Token 메일로 온 토큰"})
     result = r.json()
     print(result)
 
