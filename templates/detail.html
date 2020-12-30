@@ -24,7 +24,7 @@
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
 
-
+    <!-- 
     <style>
         li > a {
             color: lightgray;
@@ -34,6 +34,8 @@
             color: gray;
         }
     </style>
+
+    <!-- js -->
     <script>
         let word = '{{ word }}'
         let status = '{{ status }}'
@@ -197,50 +199,50 @@
 </head>
 
 <body>
-<div class="wrap">
-    <div class="banner" onclick="window.location.href = '/'"></div>
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-end">
-            <div>
-                <h1 id="word" style="display: inline;">{{ result.word }}</h1>
-                {% if result.pronunciation %}
-                    <h5 id="pronunciation" style="display: inline;">/{{ result.pronunciation }}/</h5>
-                {% endif %}
-            </div>
-            <button onclick="save_word()" id="btn-save" class="btn btn-outline-sparta btn-lg">
-                <i class="fa fa-floppy-o" aria-hidden="true"></i>
-            </button>
-            <button onclick="delete_word()" id="btn-delete" class="btn btn-sparta btn-lg">
-                <i class="fa fa-trash-o" aria-hidden="true"></i>
-            </button>
-        </div>
-        <hr/>
-        <div id="definitions">
-            {% for definition in result.definitions %}
-                <div style="padding:10px">
-                    <i>{{ definition.type }}</i>
-                    <br/>{{ definition.definition }}<br/>
-                    {% if definition.example %}
-                        <span class="example">{{ definition.example|safe }}</span>
+    <div class="wrap">
+        <div class="banner" onclick="window.location.href = '/'"></div>
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-end">
+                <div>
+                    <h1 id="word" style="display: inline;">{{ result.word }}</h1>
+                    {% if result.pronunciation %}
+                        <h5 id="pronunciation" style="display: inline;">/{{ result.pronunciation }}/</h5>
                     {% endif %}
                 </div>
-            {% endfor %}
+                <button onclick="save_word()" id="btn-save" class="btn btn-outline-sparta btn-lg">
+                    <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                </button>
+                <button onclick="delete_word()" id="btn-delete" class="btn btn-sparta btn-lg">
+                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                </button>
+            </div>
+            <hr/>
+            <div id="definitions">
+                {% for definition in result.definitions %}
+                    <div style="padding:10px">
+                        <i>{{ definition.type }}</i>
+                        <br/>{{ definition.definition }}<br/>
+                        {% if definition.example %}
+                            <span class="example">{{ definition.example|safe }}</span>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <!--  예문 작성  -->
+        <div id="examples" class="container">
+            <h3 style="text-align: center;margin-bottom:1rem">Write your own sentences!</h3>
+            <ul id="example-list">
+                <li id="ex-0">This sentence contains the word 'word'.&nbsp;&nbsp;&nbsp;<a
+                        href="javascript:delete_ex(0)">delete</a></li>
+                <li id="ex-1">I don't like using the MS Word program.&nbsp;&nbsp;&nbsp;<a
+                        href="javascript:delete_ex(1)">delete</a></li>
+            </ul>
+            <div class="d-flex justify-content-between" style="margin-left:20px;">
+                <input id="new-example" class="form-control form-control-sm" style="margin-right: 0.5rem">
+                <button class="btn btn-outline-secondary btn-sm" onclick="add_ex()">add</button>
+            </div>
         </div>
     </div>
-    <!--  예문 작성  -->
-    <div id="examples" class="container">
-        <h3 style="text-align: center;margin-bottom:1rem">Write your own sentences!</h3>
-        <ul id="example-list">
-            <li id="ex-0">This sentence contains the word 'word'.&nbsp;&nbsp;&nbsp;<a
-                    href="javascript:delete_ex(0)">delete</a></li>
-            <li id="ex-1">I don't like using the MS Word program.&nbsp;&nbsp;&nbsp;<a
-                    href="javascript:delete_ex(1)">delete</a></li>
-        </ul>
-        <div class="d-flex justify-content-between" style="margin-left:20px;">
-            <input id="new-example" class="form-control form-control-sm" style="margin-right: 0.5rem">
-            <button class="btn btn-outline-secondary btn-sm" onclick="add_ex()">add</button>
-        </div>
-    </div>
-</div>
 </body>
 </html>
